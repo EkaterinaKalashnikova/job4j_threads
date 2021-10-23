@@ -17,13 +17,23 @@ public class ConsoleProgress implements Runnable {
             try {
                 System.out.println(" Loading ... |");
                 Thread.sleep(500);
-/**              String[] process = new String[3];
-                 process[0] = "\";
-                 process[1] = "|";
-                 process[2] = "/";
-                 System.out.print("\r load: " + process[...]);*/
+                String[] process = new String[3];
+                process[0] = "\\";
+                process[1] = "|";
+                process[2] = "/";
+              /**  for (int i = 0; i < process.length; i++) {
+                    System.out.print("\r load: " + process[i]);
+                    if (i == 2) {
+                        for (int j = process.length - 1; j >= 0; j--) {
+                            System.out.print(process[j] + " ");
+                        }
+                    }
+                }*/
+                System.out.println("\r load: " + process[2] + process[1] + process[0]);
+                System.out.println("\r load: " + process[0] + process[1] + process[2]);
             } catch (InterruptedException e) {
                 e.printStackTrace();
+                Thread.currentThread().interrupt();
             }
         }
     }
@@ -31,11 +41,4 @@ public class ConsoleProgress implements Runnable {
 
 
 
-     /**   4. В тело цикла добавьте вывод в консоль.
-
-        Loading ... |.
-
-        Последний символ должен меняться: - \ | /.
-System.out.print("\r load: " + process[...]);
-Эти символы создадут эффект крутящегося шара. */
 
