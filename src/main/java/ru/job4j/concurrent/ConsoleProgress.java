@@ -25,6 +25,7 @@ public class ConsoleProgress implements Runnable {
                 }
                 System.out.println(" Loading ... |");
             }
+
         }
     }
 }
