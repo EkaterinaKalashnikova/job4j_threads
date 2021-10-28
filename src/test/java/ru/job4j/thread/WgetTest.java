@@ -12,9 +12,8 @@ public class WgetTest {
     @Test
     public void whenCreatedRun() throws InterruptedException {
         String[] urls = {
-                "https://esmio.ru/odezhda-dlya-tancev/muzhskaya-balnaya/rubashki/",
-                "https://esmio.ru/odezhda-dlya-tancev/zhenskaya-balnaya/platya/",
-                "https://esmio.ru/odezhda-dlya-tancev/muzhskaya-balnaya/fraki/"
+                "https://animalsglobe.ru/wp-content/uploads/2011/11/siamskaya-koshka.jpg",
+                "https://krasivosti.pro/uploads/posts/2021-04/thumbs/1617692794_7-p-koshachi-oboi-kotiki-siamskie-7.jpg"
         };
         List<Wget> uploads = new ArrayList<>();
         List<Thread> threads = new ArrayList<>();
