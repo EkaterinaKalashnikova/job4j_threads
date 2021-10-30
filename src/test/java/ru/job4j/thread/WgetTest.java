@@ -13,7 +13,7 @@ public class WgetTest {
     public void whenCreatedRun() throws InterruptedException {
         String[] urls = {
                 "https://animalsglobe.ru/wp-content/uploads/2011/11/siamskaya-koshka.jpg",
-                "https://krasivosti.pro/uploads/posts/2021-04/thumbs/1617692794_7-p-koshachi-oboi-kotiki-siamskie-7.jpg"
+              /**  "https://krasivosti.pro/uploads/posts/2021-04/thumbs/1617692794_7-p-koshachi-oboi-kotiki-siamskie-7.jpg"*/
         };
         List<Wget> uploads = new ArrayList<>();
         List<Thread> threads = new ArrayList<>();

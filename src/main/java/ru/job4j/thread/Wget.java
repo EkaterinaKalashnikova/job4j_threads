@@ -19,7 +19,7 @@ public class Wget implements Runnable {
         System.out.println("Скачивание началось....");
         long start = System.currentTimeMillis();
         try (BufferedInputStream in = new BufferedInputStream(new URL(url).openStream())) {
-            try (FileOutputStream fileOutputStream = new FileOutputStream("tmp.jpg")) {
+            try (FileOutputStream fileOutputStream = new FileOutputStream("tmp1.jpg")) {
                 byte[] dataBuffer = new byte[1024];
                 int bytesRead;
                 long newTime = System.currentTimeMillis();
@@ -27,7 +27,7 @@ public class Wget implements Runnable {
                     fileOutputStream.write(dataBuffer, 0, bytesRead);
                     newTime = System.currentTimeMillis() - newTime;
                     if (newTime < speed) {
-                        Thread.sleep(speed - newTime);
+                        Thread.sleep(bytesRead / speed);
                     }
                     newTime = System.currentTimeMillis();
                     System.out.println(bytesRead);
@@ -41,18 +41,18 @@ public class Wget implements Runnable {
     }
 
     public static void main(String[] args) throws InterruptedException {
-            String url = args[0];
-            int speed = Integer.parseInt(args[1]);
-            if (args.length != 2) {
-                throw new IllegalArgumentException();
-            }
-            Thread wget = new Thread(new Wget(url, speed));
-            wget.start();
-            wget.join();
-        }
+        valid(args);
+        String url = args[0];
+        int speed = Integer.parseInt(args[1]);
+        Thread wget = new Thread(new Wget(url, speed));
+        wget.start();
+        wget.join();
+    }
 
-    public String getUrl() {
-        return url;
+    private static void valid(String[] args) {
+        if (args.length != 2) {
+            throw new IllegalArgumentException();
+        }
     }
 
     public int getSpeed() {
