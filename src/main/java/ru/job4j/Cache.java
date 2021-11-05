@@ -1,13 +1,11 @@
 package ru.job4j;
 
-import java.util.concurrent.atomic.AtomicReference;
-
 public final class Cache {
-    private static AtomicReference<Cache> cache;
+    private static Cache cache;
 
-    public static synchronized AtomicReference<Cache> instOf() {
+    public static synchronized Cache instOf() {
         if (cache == null) {
-            cache = new AtomicReference<Cache>();
+            cache = new Cache();
         }
         return cache;
     }
