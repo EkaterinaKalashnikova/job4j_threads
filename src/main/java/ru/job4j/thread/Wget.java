@@ -2,7 +2,6 @@ package ru.job4j.thread;
 
 import java.io.*;
 import java.net.URL;
-import java.util.Scanner;
 
 public class Wget implements Runnable {
     private final String url;
@@ -17,17 +16,8 @@ public class Wget implements Runnable {
     public void run() {
         System.out.println("Скачивание началось....");
         long start = System.currentTimeMillis();
-        BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
-        System.out.println("Введите адресную строку: ");
-        String s1 = null;
-        try {
-            s1 = reader.readLine();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        assert s1 != null;
-        try (BufferedInputStream in = new BufferedInputStream(new URL(s1).openStream())) {
-            try (FileOutputStream fileOutputStream = new FileOutputStream("tmp4.jpg")) {
+        try (BufferedInputStream in = new BufferedInputStream(new URL(url).openStream())) {
+            try (FileOutputStream fileOutputStream = new FileOutputStream("e626d2580266568c78dbdf3451644697.png")) {
                 byte[] dataBuffer = new byte[1024];
                 int bytesRead;
                 long bytesWrited = 0;
@@ -40,10 +30,10 @@ public class Wget implements Runnable {
                         if (diffTime < 1000) {
                             Thread.sleep(1000 - diffTime);
                         }
+                        System.out.println(bytesRead);
+                        bytesWrited = 0;
+                        time = System.currentTimeMillis();
                     }
-                    bytesWrited = 0;
-                    System.out.println(bytesRead);
-                    time = System.currentTimeMillis();
                 }
             }
         } catch (IOException | InterruptedException e) {
@@ -68,4 +58,5 @@ public class Wget implements Runnable {
         }
     }
 }
+
 
