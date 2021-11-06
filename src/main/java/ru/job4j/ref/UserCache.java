@@ -23,7 +23,5 @@ public class UserCache {
         return new ArrayList<>(users.values());
     }
 }
-//    List<String> targetList = multiall.stream()
-//            .map(Map.Entry::getValue)
-//            .collect(Collectors.toList());
+
 
