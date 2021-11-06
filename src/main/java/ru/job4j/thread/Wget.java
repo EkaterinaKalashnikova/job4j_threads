@@ -30,10 +30,10 @@ public class Wget implements Runnable {
                         if (diffTime < 1000) {
                             Thread.sleep(1000 - diffTime);
                         }
-                        System.out.println(bytesRead);
                         bytesWrited = 0;
                         time = System.currentTimeMillis();
                     }
+                    System.out.println(bytesRead);
                 }
             }
         } catch (IOException | InterruptedException e) {
