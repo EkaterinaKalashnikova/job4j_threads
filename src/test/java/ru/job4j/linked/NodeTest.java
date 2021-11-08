@@ -9,11 +9,14 @@ public class NodeTest {
 
     @Test
     public <T> void whenNodeTest() {
-       /** Node<T> tNode = null;
-        assert false;
-        T nodeValue = tNode.getValue();
+        Node<T> tNode = new Node<>(null, null);
         Node<T> nodeNext = tNode.getNext();
-        Assert.assertThat(false, is(nodeValue));
-        Assert.assertThat(false, is(nodeNext));*/
+        T nodeValue = tNode.getValue();
+        Assert.assertNull(nodeNext);
+        Assert.assertNull(nodeValue);
+        String nodeNext1 = "second";
+        String nodeValue1 = "first";
+        Assert.assertThat("second", is(nodeNext1));
+        Assert.assertThat("first", is(nodeValue1));
     }
 }
