@@ -1,7 +1,10 @@
 package ru.job4j.thread;
 
 import java.io.*;
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.net.URL;
+import java.nio.file.Paths;
 
 public class Wget implements Runnable {
     private final String url;
@@ -17,7 +20,7 @@ public class Wget implements Runnable {
         System.out.println("Скачивание началось....");
         long start = System.currentTimeMillis();
         try (BufferedInputStream in = new BufferedInputStream(new URL(url).openStream())) {
-            try (FileOutputStream fileOutputStream = new FileOutputStream("e626d2580266568c78dbdf3451644697.png")) {
+           try (FileOutputStream fileOutputStream = new FileOutputStream(Paths.get(new URI(url).getPath()).getFileName().toString())) {
                 byte[] dataBuffer = new byte[1024];
                 int bytesRead;
                 long bytesWrited = 0;
@@ -33,10 +36,9 @@ public class Wget implements Runnable {
                         bytesWrited = 0;
                         time = System.currentTimeMillis();
                     }
-                    System.out.println(bytesRead);
                 }
             }
-        } catch (IOException | InterruptedException e) {
+        } catch (IOException | InterruptedException | URISyntaxException e) {
             Thread.currentThread().interrupt();
         }
         long end = System.currentTimeMillis();
