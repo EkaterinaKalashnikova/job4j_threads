@@ -1,6 +1,7 @@
 package ru.job4j.io;
 
 import java.io.*;
+import java.util.function.Predicate;
 
 public class ParseFile implements Parser {
     private final File file;
@@ -9,29 +10,18 @@ public class ParseFile implements Parser {
         this.file = file;
     }
 
-    public String getContent() throws FileNotFoundException {
+    @Override
+    public String content(Predicate<Character> filter) throws IOException {
         String output = "";
         InputStream i = new FileInputStream(file);
         try (BufferedReader buf = new BufferedReader(new InputStreamReader(i))) {
             int data;
+            Predicate<Character> filters = x -> x < 0x80;
             while ((data = buf.read()) > 0) {
-                output += (char) data;
-            }
-        } catch (IOException ex) {
-            System.out.println(ex.getMessage());
-        }
-        return output;
-    }
-
-    public String getContentWithoutUnicode() throws FileNotFoundException {
-        String output = "";
-        InputStream i = new FileInputStream(file);
-        try (BufferedReader buf = new BufferedReader(new InputStreamReader(i))) {
-            int data;
-            while ((data = buf.read()) > 0) {
-                if (data < 0x80) {
+                if (filters.test((char) data)) {
                     output += (char) data;
                 }
+                output += (char) data;
             }
         } catch (IOException ex) {
             System.out.println(ex.getMessage());
@@ -41,9 +31,3 @@ public class ParseFile implements Parser {
 }
 
 
-
-
-/**        - Нарушен принцип единой ответственности. Тут нужно сделать два класса.
-
-       - Методы getContent написаны в стиле копипаста. Нужно применить шаблон стратегия.
-        content(Predicate<Character> filter)*/

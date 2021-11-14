@@ -1,10 +1,9 @@
 package ru.job4j.io;
 
-import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.util.function.Predicate;
 
 public interface Parser {
 
-     String getContent() throws FileNotFoundException;
-
-     String getContentWithoutUnicode() throws FileNotFoundException;
+    String content(Predicate<Character> filter) throws IOException;
 }
