@@ -12,21 +12,30 @@ public class ParseFile implements Parser {
 
     @Override
     public String content(Predicate<Character> filter) throws IOException {
-        String output = "";
+        StringBuilder output = new StringBuilder();
         InputStream i = new FileInputStream(file);
         try (BufferedReader buf = new BufferedReader(new InputStreamReader(i))) {
             int data;
-            Predicate<Character> filters = x -> x < 0x80;
             while ((data = buf.read()) > 0) {
-                if (filters.test((char) data)) {
-                    output += (char) data;
+                if (filter.test((char) data)) {
+                    if (data < 0x80) {
+                        output.append((char) data);
+                    }
+                    output.append((char) data);
                 }
-                output += (char) data;
             }
         } catch (IOException ex) {
             System.out.println(ex.getMessage());
         }
-        return output;
+        return output.toString();
+    }
+
+    public String getContent(Predicate<Character> filter) throws IOException {
+       return content(filter);
+    }
+
+    public String getContentWithoutUnicode(Predicate<Character> filter) throws IOException {
+        return content(filter);
     }
 }
 
