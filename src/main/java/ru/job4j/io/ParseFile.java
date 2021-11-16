@@ -18,10 +18,7 @@ public class ParseFile implements Parser {
             int data;
             while ((data = buf.read()) > 0) {
                 if (filter.test((char) data)) {
-                    if (data < 0x80) {
                         output.append((char) data);
-                    }
-                    output.append((char) data);
                 }
             }
         } catch (IOException ex) {
@@ -31,11 +28,11 @@ public class ParseFile implements Parser {
     }
 
     public String getContent(Predicate<Character> filter) throws IOException {
-       return content(filter);
+       return content(i -> true);
     }
 
     public String getContentWithoutUnicode(Predicate<Character> filter) throws IOException {
-        return content(filter);
+        return content(i -> i < 0x80);
     }
 }
 
