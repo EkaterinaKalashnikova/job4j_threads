@@ -1,6 +1,7 @@
 package ru.job4j.ref;
 
 import org.junit.Test;
+
 import java.util.List;
 
 public class UserCacheTest {
