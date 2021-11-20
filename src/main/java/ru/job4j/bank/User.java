@@ -3,7 +3,6 @@ package ru.job4j.bank;
 import java.util.Objects;
 
 public class User {
-    public static final Object LOCK = new Object();
     private int id;
     private int amount;
 
