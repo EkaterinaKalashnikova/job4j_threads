@@ -11,10 +11,6 @@ public class User {
         this.amount = amount;
     }
 
-    public User() {
-
-    }
-
     public int getId() {
         return id;
     }
