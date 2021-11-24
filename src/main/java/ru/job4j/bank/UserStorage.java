@@ -10,7 +10,7 @@ public class UserStorage {
     private final Map<Integer, User> users = new HashMap();
 
     public boolean add(User user) {
-        return users.putIfAbsent(user.getId(), user) != user;
+        return users.putIfAbsent(user.getId(), user) == null;
     }
 
     public synchronized boolean update(User user) {
@@ -24,7 +24,7 @@ public class UserStorage {
     public synchronized boolean transfer(int fromId, int toId, int amount) {
         User userFrom = users.get(fromId);
         User userTo = users.get(toId);
-        if (userFrom == null || userFrom.getAmount() <= amount) {
+        if (userFrom == null || userFrom.getAmount() < amount || userTo == null) {
                 return false;
         }
         userFrom.setAmount(userFrom.getAmount() - amount);
