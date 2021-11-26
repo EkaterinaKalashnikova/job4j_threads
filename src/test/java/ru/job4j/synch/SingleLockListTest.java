@@ -12,7 +12,7 @@ public class SingleLockListTest {
     @Test
     public void add() throws InterruptedException {
         SingleLockList<Integer> list = new SingleLockList<>();
-       /** Thread first = new Thread(() -> list.add(1));
+        Thread first = new Thread(() -> list.add(1));
         Thread second = new Thread(() -> list.add(2));
         first.start();
         second.start();
@@ -20,6 +20,6 @@ public class SingleLockListTest {
         second.join();
         Set<Integer> rsl = new TreeSet<>();
         list.iterator().forEachRemaining(rsl::add);
-        assertThat(rsl, is(Set.of(1, 2)));*/
+        assertThat(rsl, is(Set.of(1, 2)));
     }
 }
