@@ -1,5 +1,7 @@
 package ru.job4j;
 
+import ru.job4j.thread.Barrier;
+
 public class MultiUser {
     public static void main(String[] args) {
         Barrier barrier = new Barrier();

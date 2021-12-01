@@ -1,4 +1,4 @@
-package ru.job4j;
+package ru.job4j.thread;
 
 public class Barrier {
     private boolean flag = false;

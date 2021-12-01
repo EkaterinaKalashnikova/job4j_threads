@@ -1,7 +1,5 @@
 package ru.job4j.thread;
 
-import ru.job4j.CountBarrier;
-
 public class ExamCountBarrier {
     public static void main(String[] args) {
         int total = 10;
@@ -15,7 +13,7 @@ public class ExamCountBarrier {
             countBarrier.await();
             System.out.println(Thread.currentThread().getName() + " started");
         }, "worker");
-        director.start();
         worker.start();
+        director.start();
     }
 }

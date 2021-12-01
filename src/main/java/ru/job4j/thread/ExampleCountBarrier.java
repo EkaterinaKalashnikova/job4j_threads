@@ -1,7 +1,5 @@
 package ru.job4j.thread;
 
-import ru.job4j.CountBarrier;
-
 public class ExampleCountBarrier implements Runnable {
 
     private final CountBarrier countBarrier;

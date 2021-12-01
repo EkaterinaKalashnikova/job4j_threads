@@ -1,4 +1,4 @@
-package ru.job4j;
+package ru.job4j.thread;
 
 public class CountBarrier {
     private final Object monitor = this;
@@ -12,24 +12,24 @@ public class CountBarrier {
     }
 
     public void count() {
-        synchronized (this) {
+        synchronized (monitor) {
             count++;
             notifyAll();
         }
     }
 
     public void await() {
-        synchronized (this) {
-            while (count >= total) {
+        synchronized (monitor) {
+            while (count < total) {
                 try {
                     wait();
                 } catch (InterruptedException e) {
                     Thread.currentThread().interrupt();
                 }
             }
-            count++;
         }
     }
 }
+
 
 
