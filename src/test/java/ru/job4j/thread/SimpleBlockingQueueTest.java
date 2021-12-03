@@ -4,6 +4,7 @@ import org.junit.Test;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.ConcurrentLinkedQueue;
 
 import static org.junit.Assert.*;
 
@@ -47,7 +48,7 @@ public class SimpleBlockingQueueTest {
     @Test
     public void poll() throws InterruptedException {
         SimpleBlockingQueue<Integer> buf = new SimpleBlockingQueue<>(10);
-        List<Integer> result = new ArrayList<>();
+        ConcurrentLinkedQueue<Integer> result = new ConcurrentLinkedQueue<>();
         for (int i = 0; i < 10; i++) {
             Thread producer = new Thread(() -> {
                 for (int j = 0; j < 10; j++) {
