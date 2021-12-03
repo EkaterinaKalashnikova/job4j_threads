@@ -8,33 +8,50 @@ import java.util.Queue;
 
 @ThreadSafe
 public class SimpleBlockingQueue<T> {
+
     @GuardedBy("this")
     private Queue<T> queue = new LinkedList<>();
 
+    private final Object monitor = this;
+
+    private final int limit;
+
+    public SimpleBlockingQueue(int limit) {
+        this.limit = limit;
+    }
+
     public void offer(T value) {
+        synchronized (monitor) {
+            while (queue.size() >= limit) {
+                try {
+                    wait();
+                } catch (InterruptedException e) {
+                    Thread.currentThread().interrupt();
+                }
+            }
+            queue.offer(value);
+            notify();
+        }
     }
 
     public T poll() {
-        return null;
+        synchronized (monitor) {
+            T result = null;
+            try {
+                while (queue.isEmpty()) {
+                    wait();
+                }
+                result = queue.poll();
+                notify();
+            } catch (InterruptedException e) {
+                Thread.currentThread().interrupt();
+            }
+            return result;
+        }
+    }
+
+    public synchronized int getSizeQeue() {
+        return queue.size();
     }
 }
 
-/** Каждой нити нужно передать объект:
-
- new SimpleBlockingQueue<Integer>()
-
- Этот объект будет общим ресурсом между этими нитями.
-
- Метод poll() должен вернуть объект из внутренней коллекции.
- Если в коллекции объектов нет, то нужно перевести
- текущую нить в состояние ожидания.
-
- Важный момент, когда нить переводить в состояние ожидания,
- то она отпускает объект монитор и другая нить тоже может выполнить этот метод.
- 1. Реализовать методы poll() и offer().
-
- 2. Написать тесты. В тестах должны быть две нити: одна производитель, другая потребитель.
-
- Через методы join() добиться последовательного выполнение программы.
-
- */
