@@ -13,13 +13,25 @@ public class SimpleBlockingQueueTest {
     @Test
     public void test() throws InterruptedException {
         SimpleBlockingQueue<Integer> block = new SimpleBlockingQueue<>(7);
-        Thread producer = new Thread(() -> block.offer(7));
-        Thread consumer = new Thread(block::poll);
+        Thread producer = new Thread(() -> {
+            try {
+                block.offer(7);
+            } catch (InterruptedException e) {
+                Thread.currentThread().interrupt();
+            }
+        });
+        Thread consumer = new Thread(() -> {
+            try {
+                block.poll();
+            } catch (InterruptedException e) {
+                Thread.currentThread().interrupt();
+            }
+        });
         producer.start();
         producer.join();
         consumer.start();
         consumer.join();
-        assertEquals(0, block.getSizeQeue());
+        assertEquals(0, block.getSizeQueue());
     }
 
     @Test
@@ -28,20 +40,28 @@ public class SimpleBlockingQueueTest {
         List<Integer> result = new ArrayList<>();
         Thread producer = new Thread(() -> {
             for (int i = 0; i < 10; i++) {
-                buf.offer(i);
+                try {
+                    buf.offer(i);
+                } catch (InterruptedException e) {
+                    Thread.currentThread().interrupt();
+                }
             }
         });
         producer.start();
         Thread.sleep(1000);
-        assertEquals(5, buf.getSizeQeue());
+        assertEquals(5, buf.getSizeQueue());
         Thread consumer = new Thread(() -> {
             for (int i = 0; i < 10; i++) {
-                result.add(buf.poll());
+                try {
+                    result.add(buf.poll());
+                } catch (InterruptedException e) {
+                    Thread.currentThread().interrupt();
+                }
             }
         });
         consumer.start();
         consumer.join();
-        assertEquals(0, buf.getSizeQeue());
+        assertEquals(0, buf.getSizeQueue());
         assertEquals(10, result.size());
     }
 
@@ -52,18 +72,26 @@ public class SimpleBlockingQueueTest {
         for (int i = 0; i < 10; i++) {
             Thread producer = new Thread(() -> {
                 for (int j = 0; j < 10; j++) {
-                    buf.offer(j);
+                    try {
+                        buf.offer(j);
+                    } catch (InterruptedException e) {
+                        Thread.currentThread().interrupt();
+                    }
                 }
             });
             producer.start();
         }
         Thread.sleep(2000);
-        assertEquals(10, buf.getSizeQeue());
+        assertEquals(10, buf.getSizeQueue());
         List<Thread> listConsumer = new ArrayList<>();
         for (int j = 0; j < 10; j++) {
             Thread consumer = new Thread(() -> {
                 for (int i = 0; i < 10; i++) {
-                    result.add(buf.poll());
+                    try {
+                        result.add(buf.poll());
+                    } catch (InterruptedException e) {
+                        Thread.currentThread().interrupt();
+                    }
                 }
             });
             listConsumer.add(consumer);
@@ -76,7 +104,7 @@ public class SimpleBlockingQueueTest {
                 Thread.currentThread().interrupt();
             }
         });
-        assertEquals(0, buf.getSizeQeue());
+        assertEquals(0, buf.getSizeQueue());
         assertEquals(100, result.size());
     }
 }

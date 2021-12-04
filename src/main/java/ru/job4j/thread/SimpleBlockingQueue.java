@@ -16,41 +16,33 @@ public class SimpleBlockingQueue<T> {
 
     private final int limit;
 
-    public SimpleBlockingQueue(int limit) {
+    public SimpleBlockingQueue(int limit)  {
         this.limit = limit;
     }
 
-    public void offer(T value) {
+    public void offer(T value) throws InterruptedException {
         synchronized (monitor) {
-            while (queue.size() >= limit) {
-                try {
+            while (queue.size() == limit) {
                     wait();
-                } catch (InterruptedException e) {
-                    Thread.currentThread().interrupt();
-                }
             }
             queue.offer(value);
             notify();
         }
     }
 
-    public T poll() {
+    public T poll() throws InterruptedException {
         synchronized (monitor) {
-            T result = null;
-            try {
+            T result;
                 while (queue.isEmpty()) {
                     wait();
                 }
                 result = queue.poll();
                 notify();
-            } catch (InterruptedException e) {
-                Thread.currentThread().interrupt();
-            }
             return result;
         }
     }
 
-    public synchronized int getSizeQeue() {
+    public synchronized int getSizeQueue() {
         return queue.size();
     }
 }
