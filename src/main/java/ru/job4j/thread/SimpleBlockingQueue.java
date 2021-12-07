@@ -1,6 +1,6 @@
 package ru.job4j.thread;
 
-import com.google.errorprone.annotations.concurrent.GuardedBy;
+import net.jcip.annotations.GuardedBy;
 
 import javax.annotation.concurrent.ThreadSafe;
 import java.util.LinkedList;
