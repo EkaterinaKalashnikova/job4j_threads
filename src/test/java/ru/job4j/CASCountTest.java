@@ -27,4 +27,31 @@ public class CASCountTest {
         two.join();
         assertThat(count.get(), is(10));
     }
+
+    @Test
+    public void whenUseCASCountHundredTimes() throws InterruptedException {
+        CASCount count = new CASCount();
+        Thread one = new Thread(() -> {
+            for (int i = 0; i < 100; i++) {
+                count.increment();
+            }
+        });
+        Thread two = new Thread(() -> {
+            for (int i = 0; i < 100; i++) {
+                count.increment();
+            }
+        });
+        Thread three = new Thread(() -> {
+            for (int i = 0; i < 100; i++) {
+                count.increment();
+            }
+        });
+        one.start();
+        two.start();
+        three.start();
+        one.join();
+        two.join();
+        three.join();
+        assertThat(count.get(), is(300));
+    }
 }

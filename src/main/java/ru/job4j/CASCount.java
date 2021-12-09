@@ -8,26 +8,15 @@ public class CASCount {
     private final AtomicReference<Integer> count = new AtomicReference<>(0);
 
     public void increment() {
-        int newValue;
-        int oldValue;
+        Integer value;
         do {
-            oldValue = count.get();
-            System.out.println(oldValue + " old");
-            if (oldValue == -1) {
-                throw new UnsupportedOperationException("Count is not impl.");
-            }
-            newValue = oldValue + 1;
-            System.out.println(newValue + " new");
-        } while (!count.compareAndSet(oldValue, newValue));
+            value = count.get();
+            System.out.println(value);
+        } while (!count.compareAndSet(value, value + 1));
     }
 
     public Integer get() {
-        int result;
-        result = count.get();
-        if (result == -1) {
-            throw new UnsupportedOperationException("Count is not impl.");
-        }
-        return result;
+        return count.get();
     }
 }
 
