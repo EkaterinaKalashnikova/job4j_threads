@@ -3,8 +3,6 @@ package ru.job4j.cache;
 import org.junit.Assert;
 import org.junit.Test;
 
-import static org.junit.Assert.*;
-
 public class CacheTest {
 
     @Test

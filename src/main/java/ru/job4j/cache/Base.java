@@ -26,8 +26,8 @@ public class Base {
         this.name = name;
     }
 
-    public void updateVersion() {
-        this.version++;
+    public void setVersion(int version) {
+        this.version = version;
     }
 }
 

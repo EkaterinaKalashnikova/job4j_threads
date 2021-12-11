@@ -15,8 +15,9 @@ public class Cache {
             if (value.getVersion() != model.getVersion()) {
                 throw new OptimisticException("Versions are not equal");
             }
-            model.updateVersion();
-            return model;
+            value.setVersion(value.getVersion() + 1);
+            value.setName(model.getName());
+            return value;
         });
         return updateBase != null;
     }
@@ -25,3 +26,4 @@ public class Cache {
         memory.remove(model.getId());
     }
 }
+
