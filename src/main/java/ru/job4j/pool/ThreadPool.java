@@ -18,7 +18,7 @@ public class ThreadPool {
                         try {
                             Runnable jobPoll = tasks.poll();
                             jobPoll.run();
-                        } catch (InterruptedException e) {
+                        } catch (Exception e) {
                             Thread.currentThread().interrupt();
                         }
                     }
