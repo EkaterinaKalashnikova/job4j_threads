@@ -10,7 +10,7 @@ public class ThreadPool {
     private final List<Thread> threads = new LinkedList<>();
     private final SimpleBlockingQueue<Runnable> tasks = new SimpleBlockingQueue<>(size);
 
-    private void init() {
+    public ThreadPool() {
         for (int i = 0; i < size; i++) {
             threads.add(new Thread(() -> {
                 while (!Thread.currentThread().isInterrupted()) {
@@ -26,13 +26,24 @@ public class ThreadPool {
     }
 
     public void work(Runnable job) throws InterruptedException {
-        if (threads.isEmpty()) {
-            init();
-        }
         tasks.offer(job);
     }
 
     public void shutdown() {
         threads.forEach(Thread::interrupt);
     }
+
+    public static void main(String[] args) throws InterruptedException {
+        Runnable task = () -> {
+            String name = Thread.currentThread().getName();
+            System.out.println("Task executed" + name);
+        };
+        ThreadPool threadPool = new ThreadPool();
+        for (int i = 0; i < 5; i++) {
+            threadPool.work(() -> System.out.println(task));
+            System.out.println("Task : " + threadPool.threads.get(i));
+        }
+        threadPool.shutdown();
+    }
 }
+
