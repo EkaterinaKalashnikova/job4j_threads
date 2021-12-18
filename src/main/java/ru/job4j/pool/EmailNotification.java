@@ -19,6 +19,7 @@ public class EmailNotification {
     }
 
     public void close() {
+        pool.shutdown();
         while (!pool.isTerminated()) {
             try {
                 Thread.sleep(100);
@@ -26,19 +27,9 @@ public class EmailNotification {
                 e.printStackTrace();
             }
         }
-        pool.shutdown();
     }
 
     public void send(String subject, String body, String email) {
 
-    }
-
-    public static void main(String[] args) {
-        EmailNotification emailNotification = new EmailNotification();
-        User user = new User();
-        user.setEmail("123@bk.ru");
-        user.setUsername("Sam");
-        emailNotification.emailTo(user);
-        System.out.println(user.getUsername());
     }
 }
