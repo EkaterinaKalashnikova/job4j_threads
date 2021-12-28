@@ -1,5 +1,6 @@
 package ru.job4j.pool;
 
+import java.util.concurrent.ForkJoinPool;
 import java.util.concurrent.RecursiveTask;
 
 public class SearchIndexArray<T> extends RecursiveTask<Integer> {
@@ -16,12 +17,11 @@ public class SearchIndexArray<T> extends RecursiveTask<Integer> {
     }
 
     public int linearSearch(T[] data, T searchElement) {
-       /* System.out.println("Линейный поиск");
-        System.out.println(Thread.currentThread().getName());*/
         int index = -1;
         for (int i = start; i < end; i++) {
             if (data[i].equals(searchElement)) {
-                return i;
+                index = i;
+                break;
             }
         }
         return index;
@@ -51,6 +51,11 @@ public class SearchIndexArray<T> extends RecursiveTask<Integer> {
             return linearSearch(data, searchElement);
         }
         return recursiveBinarySearch(data, start, end, searchElement);
+    }
+
+    public static <T> int init(T[] data, int start, int end, T searchElement) {
+        ForkJoinPool forkJoinPool = new ForkJoinPool();
+        return forkJoinPool.invoke(new SearchIndexArray<>(data, start, end, searchElement));
     }
 }
 
