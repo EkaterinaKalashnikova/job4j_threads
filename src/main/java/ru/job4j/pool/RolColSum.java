@@ -1,5 +1,11 @@
 package ru.job4j.pool;
 
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Objects;
+import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.ExecutionException;
+
 public class RolColSum {
 
     public static class Sums {
@@ -21,43 +27,65 @@ public class RolColSum {
         public void setColSum(int colSum) {
             this.colSum = colSum;
         }
+
+        @Override
+        public boolean equals(Object o) {
+            if (this == o) {
+                return true;
+            }
+            if (o == null || getClass() != o.getClass()) {
+                return false;
+            }
+            Sums sums = (Sums) o;
+            return rowSum == sums.rowSum && colSum == sums.colSum;
+        }
+
+        @Override
+        public int hashCode() {
+            return Objects.hash(rowSum, colSum);
+        }
     }
 
     public static Sums[] sum(int[][] matrix) {
         int n = matrix.length;
-        Sums[] sums = new Sums[2 * n];
+        Sums[] sums = new Sums[n];
         for (int row = 0; row < matrix.length; row++) {
-            int rowSum = 0;
-            for (int col = 0; col < matrix[row].length; col++) {
-                  rowSum += matrix[row][col];
+            sums[row] = new Sums();
+            for (int col = 0; col < matrix.length; col++) {
+                 int rowSum = sums[row].getRowSum() + matrix[row][col];
+                 int colSum = sums[row].getColSum() + matrix[col][row];
+                 sums[row].setRowSum(rowSum);
+                 sums[row].setColSum(colSum);
             }
-            sums[rowSum].rowSum = rowSum;
         }
-
-        for (int col = 0; col < matrix[0].length; col++) {
-            int colSum = 0;
-            for (int row = 0; row < matrix.length; row++) {
-                colSum += matrix[row][col];
-            }
-            sums[colSum].colSum = colSum;
-        }
-
         return sums;
     }
 
-    public static Sums[] asyncSum(int[][] matrix) {
+    public static Sums[] asyncSum(int[][] matrix) throws ExecutionException, InterruptedException {
         int n = matrix.length;
-        Sums[] sums = new Sums[2 * n];
+        Sums[] sums = new Sums[n];
+        Map<Integer, CompletableFuture<Sums>> futures = new HashMap<>();
+        for (int i = 0; i < n; i++) {
+            futures.put(i, getTask(matrix, i));
+        }
+        for (Integer key : futures.keySet()) {
+            sums[key] = futures.get(key).get();
+        }
         return sums;
     }
+
+    public static CompletableFuture<Sums> getTask(int[][] matrix, int i) {
+        return CompletableFuture.supplyAsync(() -> {
+            Sums sums = new Sums();
+            for (int j = 0; j < matrix.length; j++) {
+                int rowSum = sums.getRowSum() + matrix[i][j];
+                int colSum = sums.getColSum() + matrix[j][i];
+                sums.setRowSum(rowSum);
+                sums.setColSum(colSum);
+            }
+            return sums;
+        });
+    }
+
 }
 
-/*
-1. Дан каркас класса. Ваша задача подсчитать суммы по строкам и
- столбцам квадратной матрицы
-        - sums[i].rowSum - сумма элементов по i строке
-        - sums[i].colSum  - сумма элементов по i столбцу
-2. Реализовать последовательную версию программы
-3. Реализовать асинхронную версию программы. i - я задача считает сумму по i столбцу и i строке
-4. Написать тесты
- */
